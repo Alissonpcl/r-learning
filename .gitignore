@@ -47,3 +47,7 @@ po/*~
 # IDE
 .idea
 *.iml
+
+# MAC
+
+.DS_Store
