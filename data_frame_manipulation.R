@@ -8,7 +8,7 @@ aggregate(value ~ salesperson, sales, sum)
 
 # Grouping using dplyr
 require(dplyr)
-agg2 <- sales %>%
+sales %>%
   group_by(salesperson) %>%
   summarise(total_vendido = sum(value))
 
@@ -19,11 +19,12 @@ sales %>%
   mutate(perc = prop.table(sold) * 100)
 
 # Grouping by mutiple columns
-customers <- read.csv("sample-datasets/customers.csv")
+customers <- read.csv("sample-datasets/customers.csv",
+                      colClasses = c("churn_date" = "Date"))
 
 customers %>%
   group_by(type) %>%
-  summarise(customers = n(), churns = sum(churn_date != "")) %>%
+  summarise(customers = n(), churns = sum(!is.na(churn_date))) %>%
   mutate(perc_costumers = prop.table(customers) * 100, perc_churn = prop.table(churns) * 100) %>%
   relocate(perc_costumers, .after = customers) %>%
   bind_rows(summarise(., across(where(is.numeric), sum), across(where(is.character), ~"Total"))) #Add total row
@@ -35,3 +36,9 @@ customers %>%
 # 1 F          6557           75.2   1353       76.6
 # 2 J          2163           24.8    414       23.4
 # 3 Total      8720          100     1767      100
+
+# FILTERING DATA
+customers %>%
+  group_by(type) %>%
+  filter(!is.na(churn_date)) %>%
+  summarise(first_churn = min(churn_date), last_churn = max(churn_date), mean_churn = mean(churn_date))
