@@ -12,6 +12,10 @@ sales = transform(sales, payment_date = as.Date(payment_date))
 # values(Y) by day(X)
 plot(sales$payment_date, sales$value, type = "l")
 
+# To use a character field as the X vector
+# we must convert to factor
+plot(factor(sales$plan), sales$value, type = "l")
+
 # Generates histogram for different ranges (breaks)
 hist(sales$payment_date, breaks = "weeks")
 hist(sales$payment_date, breaks = 4) #only 4 breaks
@@ -26,6 +30,7 @@ hist(sales$payment_date,
      col = "blue"
 )
 
+# SAVE CHART TO FILE
 # Opens a new file to write an histogram
 jpeg("out.jpeg", )
 
