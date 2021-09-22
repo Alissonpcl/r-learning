@@ -1,8 +1,7 @@
 invoices = read.csv("sample-datasets/invoices.csv",
                     colClasses = c("issue_date" = "Date"))
 
-revenue_by_uf <- invoices_filtered %>%
-  select(uf, value) %>%
+revenue_by_uf <- invoices %>%
   filter(nchar(uf) > 0) %>%
   group_by(uf = toupper(uf)) %>%
   summarise(value = sum(value))
